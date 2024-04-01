@@ -227,10 +227,11 @@ git checkout work-branch
 
 ## Use Case
 #### Using the covid mortality dataset
-[covid mortality.png](source/pic1.png)
+![covid mortality.png](docs/pic1.png)
 
-[the env file.png](source/pic2.png)
+![the env file.png](docs/pic2.png)
 
 #### Using the rdf usage dataset
-[rdf usage.png](docs/pic3.png)
-[the env file.png](docs/pic4.png)
+![rdf usage.png](docs/pic3.png)
+
+![the env file.png](docs/pic4.png)
