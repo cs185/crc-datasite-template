@@ -36,7 +36,7 @@ COPY --chown=python:python --from=build /root/.local /home/python/.local
 
 ARG APP_HOST="0.0.0.0"
 ARG APP_PORT="8000"
-ARG DATA_DIR="./data"
+ARG DATA_DIR="./resource/covid_mortality.csv"
 
 ENV APP_HOST=${APP_HOST}
 ENV APP_PORT=${APP_PORT}

@@ -16,7 +16,7 @@ import flask
 def init_dashboard(server, data_dir):
     dash_app = Dash(__name__, server=server, routes_pathname_prefix='/dash/')
 
-    df = pd.read_csv(data_dir)
+    df = pd.read_csv(data_dir, index_col=0)
     #
     # df = df[df['State'] != 'United States']
     # df = df[["Week Ending Date", "State", "Observed Number", "Upper Bound Threshold", "Average Expected Count",
