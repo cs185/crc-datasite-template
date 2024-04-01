@@ -76,7 +76,7 @@ deactivate
 ### Via container
 
 ```shell
-cd rdf-usage-stats
+cd crc-datasite-template
 
 # Configure the local configuration file
 # - Copy the .env file to the src/ from where it is
