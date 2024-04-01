@@ -228,14 +228,18 @@ git checkout work-branch
 ## Use Case
 #### Using the covid mortality dataset
 Website:
+
 ![covid mortality.png](docs/pic1.png)
 
 .env file:
+
 ![the env file.png](docs/pic2.png)
 
 #### Using the rdf usage dataset
 Website:
+
 ![rdf usage.png](docs/pic3.png)
 
 .env file:
+
 ![the env file.png](docs/pic4.png)
