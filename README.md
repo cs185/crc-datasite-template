@@ -3,6 +3,7 @@
 ## Overview
 
 This template is used for building a visualization website powered by ploty dash for time-series data of CRC. The template only support line and scatter plot currently.
+This template will automatically generating line and scatter plots of the given data with group by and filter supported regardless of the schema of the data as long as the data meets the following requirements. 
 
 ## Dataset Requirements
 The template can embed the data and build a website on it as long as the dataset:
