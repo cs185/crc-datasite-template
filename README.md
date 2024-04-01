@@ -232,5 +232,5 @@ git checkout work-branch
 [the env file.png](source/pic2.png)
 
 #### Using the rdf usage dataset
-[rdf usage.png](source/pic3.png)
-[the env file.png](source/pic4.png)
+[rdf usage.png](docs/pic3.png)
+[the env file.png](docs/pic4.png)
