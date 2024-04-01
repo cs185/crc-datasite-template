@@ -44,14 +44,16 @@ def init_dashboard(server, data_dir):
 
     controls = dbc.Card(
         [
+            # the filter
             html.H4("Target:") if targets is not None else None,
             dcc.Dropdown(
                 targets,
                 "All",
-                id='dropdown',
+                id='dropdown_filter',
                 multi=False
             ) if targets is not None else None,
 
+            # the date range picker
             html.H4("Date Range:"),
             dcc.DatePickerRange(
                 id='daterangepicker',
@@ -61,21 +63,23 @@ def init_dashboard(server, data_dir):
                 end_date=pd.Timestamp(max(daterange))
             ),
 
+            # the group by picker
             html.H4("Group by:") if groups is not None else None,
             dcc.RadioItems(
                 groups,
                 groups[0],
                 inline=True,
-                id='radio',
+                id='groupby_radio',
                 inputStyle={"marginLeft": "10px", "marginRight": "3px"}
             ) if groups is not None else None,
 
+            # the data column to visualize
             html.H4("Data Options:"),
             dcc.Checklist(
                 data_cols,
                 [data_cols[0], data_cols[1]],
                 inline=False,
-                id='checklist'
+                id='data_checklist'
             ),
             dcc.Input(id="none", value=None, style={'display': 'none'}),
 
@@ -132,10 +136,10 @@ def init_dashboard(server, data_dir):
         # get the dates from the date range picker
         Input('daterangepicker', 'start_date'),
         Input('daterangepicker', 'end_date'),
-        Input('checklist', 'value'),
+        Input('data_checklist', 'value'),
         Input('plot_radio', 'value'),
-        Input('dropdown', 'value') if targets is not None else Input('none', 'value'),
-        Input('radio', 'value') if groups is not None else Input('none', 'value'),
+        Input('dropdown_filter', 'value') if targets is not None else Input('none', 'value'),
+        Input('groupby_radio', 'value') if groups is not None else Input('none', 'value'),
     )
     def update_graph(start_date, end_date, column_names, plot, target, group):
         try:
