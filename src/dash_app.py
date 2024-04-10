@@ -6,25 +6,21 @@ import dash_bootstrap_components as dbc
 import plotly.graph_objects as go
 import plotly.express as px
 from datetime import date
-import numpy as np
+from config import Config
 import pandas as pd
-import json
-import re
-import flask
+import argparse
 
 
-def init_dashboard(server, data_dir):
-    dash_app = Dash(__name__, server=server, routes_pathname_prefix='/dash/')
-
+def init_dashboard(dash_app, data_dir):
     df = pd.read_csv(data_dir, index_col=0)
     #
     # df = df[df['State'] != 'United States']
     # df = df[["Week Ending Date", "State", "Observed Number", "Upper Bound Threshold", "Average Expected Count",
     #          "Total Excess Estimate", "Percent Excess Estimate"]]
 
-    date_col = server.config["DATE_COL"]
-    ratio_cols = server.config["RATIO_COLS"]
-    dropdown_col = server.config["DROP_DOWN_COL"]
+    date_col = dash_app.server.config["DATE_COL"]
+    ratio_cols = dash_app.server.config["RATIO_COLS"]
+    dropdown_col = dash_app.server.config["DROP_DOWN_COL"]
 
     # make the data frame sorted by the date
     df[date_col] = pd.to_datetime(df[date_col], format='%Y-%m-%d')
@@ -101,13 +97,13 @@ def init_dashboard(server, data_dir):
                 [
                     dbc.Col(
                         html.H1(
-                            server.config["SITE_NAME"],
+                            dash_app.server.config["SITE_NAME"],
                             style={"margin": "10px"}
                         )
                     ),
                     dbc.Col(
                         html.H3(
-                            f"By {server.config['AUTHOR']}"
+                            f"By {dash_app.server.config['AUTHOR']}"
                         )
                     )
                 ],
@@ -188,5 +184,25 @@ def init_dashboard(server, data_dir):
 
     return dash_app
 
-# if __name__ == '__main__':
+
+if __name__ == '__main__':
+    app = Dash(__name__)
+    app.server.config.from_object(Config)
+
+    parser = argparse.ArgumentParser(description='Specify the Host and Port for run the web application')
+    parser.add_argument('--host', type=str, default=app.server.config['APP_HOST'],
+                        help='The host on which the web server will listen')
+    parser.add_argument('--port', type=int, default=app.server.config['APP_PORT'],
+                        help='The port on which the web server will listen')
+    parser.add_argument('--datadir', type=str, default=app.server.config["DATA_DIR"], help='The directory of data source')
+    parser.add_argument('--debug', type=bool, default=app.server.config["DEBUG"], help='The DEBUG option of Flask.run')
+    args = parser.parse_args()
+
+    dash_app = init_dashboard(app, args.datadir)
+
+    dash_app.run(
+        debug=args.debug,
+        host=args.host,
+        port=args.port,
+    )
 # 	dash_app.run(debug=True, host=dash_app.server.config['APP_HOST'], port=dash_app.server.config['APP_PORT'])
