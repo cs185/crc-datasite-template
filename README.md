@@ -100,10 +100,8 @@ docker compose down
 ## Contributing Guide
 ### File Structure
 Under src folder, there are several files can be modified according to custom needs:
-* application.py -- this file contains a rice csa application, which will be the server of the dash app. For more information, please go to: https://github.com/rice-crc/rice-cas-example
-* auth.py -- this is for user authority verification.
 * config.py -- this is for reading and parsing the configuration
-* dash_app.py -- this file contains the logic for dash website visualization and the interaction with the data
+* application.py -- this file contains the logic for dash website visualization and the interaction with the data
 
 Specifically, dash_app.py is the only thing that needs to be changed if the visualization and data interaction logic of this template needs to be modified.
 
