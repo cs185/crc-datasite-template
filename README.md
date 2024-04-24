@@ -77,6 +77,7 @@ git clone https://github.com/<github-username>/crc-datasite-template $HOME/crc-d
 ```
 
 ### Get the Data Source You Want to Visualize with the Template
+Firstly, you need to make a directory `resource/` under `src/`.
 To visualize the data, you need to put the data to the `src/resource/` folder where the program will get the data from.
 There are two ways you can do this depending on where the data is from
 #### Get it from an Online Data Provider Using Curl
@@ -99,6 +100,7 @@ cp /rdf/crc/<netid>/dataset-name.csv ~/crc-datasite-template/src/resource/
 ### .env configuration file
 After having the dataset, in most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
 There are five fields in the file related to a given data and have a big impact on the representation of the data:
+* DATA_DIR -- the path to the data source, usually `./src/resource/<dataset-name>.csv`
 * DATE_COL -- for specifying the time column of the data
 * RATIO_COLS -- for specifying the columns which contain several groups of the data and can be used in "group by" manner in visualization
 * DROP_DOWN_COL -- for specifying the column which contain several categories for the data and can be used as data filters
@@ -128,3 +130,6 @@ docker compose down
 ## Example of the application running
 In this example, we use the [covid mortality dataset](https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target=)
 The application showing the visualization of the dataset is running on http://10.134.196.74:8000
+In this web page, the "Target" dropdown can choose the a value and the data shown will be the entries whose value of a specific column (the one you specified at the DROP_DOWN_COL in the .env file) equals to the chosen value.
+<img width="187" alt="image" src="https://github.com/cs185/crc-datasite-template/assets/142818430/bcbb99ff-6e92-4c78-af82-8d84b4bbe7b6">
+
