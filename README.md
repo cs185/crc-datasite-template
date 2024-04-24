@@ -96,6 +96,18 @@ Now you can do:
 cp /rdf/crc/<netid>/dataset-name.csv ~/crc-datasite-template/src/resource/
 ```
 
+### .env configuration file
+After having the dataset, in most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
+There are five fields in the file related to a given data and have a big impact on the representation of the data:
+* DATE_COL -- for specifying the time column of the data
+* RATIO_COLS -- for specifying the columns which contain several groups of the data and can be used in "group by" manner in visualization
+* DROP_DOWN_COL -- for specifying the column which contain several categories for the data and can be used as data filters
+* SITE_NAME -- the name of the website
+* AUTHOR -- the author
+
+Note: the RATIO_COLS and DROP_DOWN_COL can be left with no value specified if we do not need them. It will not influence the data visualization.
+Example on what to put in this file is given below.
+
 ### Build the Docker image and run the container
 
 ```shell
@@ -113,32 +125,6 @@ cd ~/crc-datasite-template
 docker compose down
 ```
 
-### .env configuration file
-In most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
-There are five fields in the file related to a given data and have a big impact on the representation of the data:
-* DATE_COL -- for specifying the time column of the data
-* RATIO_COLS -- for specifying the columns which contain several groups of the data and can be used in "group by" manner in visualization
-* DROP_DOWN_COL -- for specifying the column which contain several categories for the data and can be used as data filters
-* SITE_NAME -- the name of the website
-* AUTHOR -- the author
-
-Note: the RATIO_COLS and DROP_DOWN_COL can be left with no value specified if we do not need them. It will not influence the data visualization.
-
-## Use Case
-#### Using the covid mortality dataset
-Website:
-
-![covid mortality.png](docs/pic1.png)
-
-.env file:
-
-![the env file.png](docs/pic2.png)
-
-#### Using the rdf usage dataset
-Website:
-
-![rdf usage.png](docs/pic3.png)
-
-.env file:
-
-![the env file.png](docs/pic4.png)
+## Example of the application running
+In this example, we use the [covid mortality dataset](https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target=)
+The application showing the visualization of the dataset is running on http://10.134.196.74:8000
