@@ -118,7 +118,7 @@ docker compose up --build -d
 ```
 the -d option here means you want your containers running in detach mode in the background without interrupting the current shell. If unneseccary, remove the -d option.
 
-If no error comes out, now you can access to the app via [<ip-of-your-vm>:8000]
+If no error comes out, now you can access to the app via <ip-of-your-vm>:8000
 
 ### Stop the container when done
 
@@ -160,4 +160,4 @@ Feel free to access the website and play with it!
 - make sure you understand the schema of the dataset and create a `.env` file according to your needs
 - put the `.env` file under the `/src`
 - in the repository, try `docker compose up --build -d`
-- access the website via [<ip-of-your-vm>:8000]
+- access the website via <ip-of-your-vm>:8000
