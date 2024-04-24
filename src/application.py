@@ -190,12 +190,12 @@ if __name__ == '__main__':
     app.server.config.from_object(Config)
 
     parser = argparse.ArgumentParser(description='Specify the Host and Port for run the web application')
-    parser.add_argument('--host', type=str, default=app.server.config['APP_HOST'],
+    parser.add_argument('--host', type=str,
                         help='The host on which the web server will listen')
-    parser.add_argument('--port', type=int, default=app.server.config['APP_PORT'],
+    parser.add_argument('--port', type=int,
                         help='The port on which the web server will listen')
-    parser.add_argument('--datadir', type=str, default=app.server.config["DATA_DIR"], help='The directory of data source')
-    parser.add_argument('--debug', type=bool, default=app.server.config["DEBUG"], help='The DEBUG option of Flask.run')
+    parser.add_argument('--datadir', type=str, help='The directory of data source')
+    parser.add_argument('--debug', type=bool, help='The DEBUG option of Flask.run')
     args = parser.parse_args()
 
     dash_app = init_dashboard(app, args.datadir)

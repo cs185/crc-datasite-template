@@ -37,14 +37,16 @@ COPY --chown=python:python --from=build /root/.local /home/python/.local
 ARG APP_HOST="0.0.0.0"
 ARG APP_PORT="8000"
 ARG DATA_DIR="./resource/covid_mortality.csv"
+ARG DEBUG=True
 
 ENV APP_HOST=${APP_HOST}
 ENV APP_PORT=${APP_PORT}
 ENV DATA_DIR=${DATA_DIR}
+ENV DEBUG=${DEBUG}
 
 EXPOSE $APP_PORT
 
 # CMD ["python", "application.py", "--host", "$APP_HOST", "--port", "$APP_PORT", "--datadir", "$DATA_DIR"]
-CMD python application.py --host $APP_HOST --port $APP_PORT --datadir $DATA_DIR
+CMD python application.py --host $APP_HOST --port $APP_PORT --datadir $DATA_DIR --debug $DEBUG
 
 USER python
