@@ -1,7 +1,7 @@
 # CRC Data Visualization Website Template
 
 ## Overview
-
+This template is created for the researchers and students at Rice University.
 This template is used for building a visualization website powered by ploty dash for time-series data of CRC. The template only support line and scatter plot currently.
 This template will automatically generating line and scatter plots of the given data with group by and filter supported regardless of the schema of the data as long as the data meets the following requirements. 
 
@@ -15,95 +15,103 @@ The template can embed the data and build a website on it as long as the dataset
 
 Note: the data schema is similar to a time-series data with one column indicating the time and multiple other numerical columns indicating the values. So basically we expect the data can be well represented by a line plot or scatter plot with the horizontal coordinate of time.
 
-## System Requirements
+## Get Started
 
-Note: While this document is primarily tailored for MacOS users, the instructions should be adaptable for Linux systems. Contributions from Windows users are also welcome.
+### Setup a Orion VM
+At first, the users of this template need to have an Orion account setup.
+Once you have one, [login to your orion account](https://orion.crc.rice.edu/)
 
+#### Add public ssh key.
+- click your name in the top right corner
+- click "settings" and click the "Update SSH Key" panel
+- put in the contents of your public ssh key in the box and click "Update SSH Key"
+
+#### Create a virtual machine.
+- go to VMs in the left-hand navigation
+- click on the green button with a plus sign icon
+- select "rocky 8.9 cloud vm - small" in the list
+- click the "create" button
+- give the instance a name ("netid-project" or something)
+- leave the rest of the default settings
+- find your vm instance in the dashboard and click on it
+- remember the instance's ip address
+
+when you first instantiate a vm, there are some post-deploy scripts that will run to perform some extra configuration (including creating a user account with your netid with sudo access and inserting your public key). You might want to wait five minutes or so before trying to connect the first time.
+
+you should be able to access the vm through vnc in the orion web ui by clicking the button with the monitor icon and selecting "vnc". you'll be taken to a vnc session with the instance.
+you can also ssh to the instance using ssh <netid>@<ip>. depending on your ssh configuration, you may have to use the -i option to specify the location of your private key. For example: `ssh -i ~/.ssh/<key> <user>@<ip>`
+
+#### Connect to the RDF share in the VM
+The vm template in orion is already configured to mount the rdf share. you can do so by entering `mount /rdf` on the command line which mounts the top-level of the share. you can navigate down to your folder at `/rdf/crc/<netid>`.
+
+#### Deleting the VM
+- log back in to https://orion.crc.rice.edu
+- find your vm instance and click on it
+- click the red button with the trash can icon and click "terminate"
+
+### Configure Docker in the VM
+First, make sure you ssh to your VM. And inside your VM do:
 ```shell
-# Make sure the Xcode CLI Tools are installed
+### Install Docker engine
 
-sudo xcodebuild -license
-xcode-select --install
+sudo dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+sudo dnf config-manager --setopt="docker-ce-stable.baseurl=https://download.docker.com/linux/centos/8/x86_64/stable" --save
+sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-compose-plugin
+
+sudo systemctl enable docker --now
+sudo systemctl enable containerd --now
+
+### Add the user to the Docker group
+
+sudo usermod -aG docker $USER
 ```
 
-## Setting Up a Local Environment
-
+### Fork and Clone this Tempelate Repository to your VM
+When you are at this [repository](https://github.com/cs185/crc-datasite-template), just click the "Fork" button on the top-right hand.
+In the new page pops up, click the green button with "Create Fork".
+Then once you confirm that there is a same repo under your github account:
+- ssh to your VM
+- try following to clone the repo to your home directory:
 ```shell
-# Fork the repository to your GitHub account:
-# - Go to https://github.com/rice-crc/rdf-usage-stats
-# - Click "Fork" in the top right corner
-# - Select your GitHub account
-
-# Clone the fork to your local environment.
-
-git clone https://github.com/<user>/crc-datasite-template
-cd crc-datasite-template
-
-# Add the parent repository as the "upstream" remote.
-
-git add remote upstream https://github.com/rice-crc/crc-datasite-template
+git clone https://github.com/<github-username>/crc-datasite-template $HOME/crc-datasite-template
 ```
 
-## Running the Project
-
-### In CLI
-
+### Get the Data Source You Want to Visualize with the Template
+To visualize the data, you need to put the data to the `src/resource/` folder where the program will get the data from.
+There are two ways you can do this depending on where the data is from
+#### Get it from an Online Data Provider Using Curl
 ```shell
-cd crc-datasite-template
-
-# Create a python virtual environment
-
-python -m venv venv
-source venv/bin/activate
-
-# Install app dependencies
-
-pip install -r src/requirements.txt
-
-# Run the app with default host ("127.0.0.1"), port (8050), and data directory ("/srv/build/rdf-usage-data/2023/")
-
-python application.py
-
-# Or run the app with specified values
-
-python application.py --host <your host> --port <your port> --datadir <your data directory>
-
-# Clean up when done
-
-deactivate
+curl -o ~/src/resrouce/<dataset-name>.csv https://<example.com>/<data>/<dataset-name>.csv
 ```
 
-### Via container
+#### Upload it to VM from your local machine
+If you are using Mac, go to finder > go > connect to server > and enter
+[smb://smb.rdf.rice.edu/research/crc/<netid>]
+you'll be prompted for your netid credentials. Once you're connected, make sure you can create a file in your directory and delete the file
+Now you can do:
+- put the data source, say `dataset-name.csv` into this file on your local machine
+- ssh to your VM
+- try
+```shell
+cp /rdf/crc/<netid>/dataset-name.csv ~/crc-datasite-template/src/resource/
+```
+
+### Build the Docker image and run the container
 
 ```shell
-cd crc-datasite-template
+cd ~/crc-datasite-template
+docker compose up --build -d
+```
+the -d option here means you want your containers running in detach mode in the background without interrupting the current shell. If unneseccary, remove the -d option.
 
-# Configure the local configuration file
-# - Copy the .env file to the src/ from where it is
-# - Populate with appropriate settings
+If no error comes out, now you can access to the app via [<ip-of-your-vm>:8000]
 
-cp path-to-env-file/.env src/.env
+### Stop the container when done
 
-# Build the Docker image and run the container
-
-docker compose up --build
-
-# Stop the container when done
-
+```shell
+cd ~/crc-datasite-template
 docker compose down
 ```
-
-## Resources
-
-* App Web UI: http://127.0.0.1:8050/
-
-## Contributing Guide
-### File Structure
-Under src folder, there are several files can be modified according to custom needs:
-* config.py -- this is for reading and parsing the configuration
-* application.py -- this file contains the logic for dash website visualization and the interaction with the data
-
-Specifically, dash_app.py is the only thing that needs to be changed if the visualization and data interaction logic of this template needs to be modified.
 
 ### .env configuration file
 In most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
@@ -115,114 +123,6 @@ There are five fields in the file related to a given data and have a big impact 
 * AUTHOR -- the author
 
 Note: the RATIO_COLS and DROP_DOWN_COL can be left with no value specified if we do not need them. It will not influence the data visualization.
-
-## Contributing Workflow
-This project follows a fork-and-pull workflow:
-
-- The `upstream` remote refers to the parent and `origin` refers to your fork
-- Merge changes through Pull Requests from `origin/working-branch` to `upstream/main`
-
-Keep the following in mind when contributing code:
-
-- Keep your local and fork repositories in sync with upstream changes
-- Always start new work with a new working branch
-- Don't commit directly to the main branch
-- Consider syncing your working branch with upstream before opening a Pull Request if the repository is very active or if there is a chance of overlapping changes
-- Ensure that your code is tested and complete. If you need feedback on unfinished work, feel free to create a Pull Request for review, but make sure to clearly mark it as a work-in-progress or for discussion purposes only
-- Clean up your local repository once your Pull Request has been merged
-
-Contribute by following the step-by-step git process outlined below.
-
-```shell
-###
-### Daily Work
-###
-
-# Pull the latest changes from upstream to ensure your main branch is up-to-date.
-
-git checkout main
-git pull upstream main
-
-# Create a new branch based off of main to isolate your work.
-
-git checkout -b working-branch
-
-# Commit your changes using a concise and descriptive title.
-
-git add .
-git commit -m "Add small change"
-
-# (Optional) Clean up before pushing your branch for a Pull Request:
-#
-# Use this step if upstream activity is high or you're collaborating 
-# closely with others on overlapping features. Rebasing is a preference
-# to minimize merge commits. Only rebase on your local working branch.
-#
-# - Pull the latest changes from upstream
-# - Rebase the changes in your working branch
-# - Commit fixes to resolve any merge conflicts
-
-git pull --rebase upstream main
-
-git add .
-git commit -m "Fixes merge conflict"
-
-###
-### Pull Request
-###
-
-# Push your working branch to your fork on GitHub.
-
-git push -u origin HEAD
-
-# Open a Pull Request (PR) to merge your changes upstream:
-# - Go to https://github.com/<user>/rdf-usage-stats
-# - Go to Pull Requests
-# - Click "New pull request"
-# - Set the base repository and branch as the parent and main
-# - Set the head repository and branch as your fork and working branch
-# - Give a concise title and description to the PR
-
-# If there is feedback during the PR review:
-# - Commit changes to resolve the feedback
-# - Update the PR by pushing the branch to your fork
-
-git add .
-git commit -m "Resolves PR feedback"
-git push origin HEAD
-
-###
-### Clean Up
-###
-
-# After the PR is merged and your work is complete, delete your working branch.
-
-git checkout main
-git branch -D working-branch
-
-# Pull the latest changes from upstream and update your fork on GitHub to make sure everything is in sync.
-
-git pull upstream main
-git push origin main
-
-
-###
-### Remedy if features developed with main branch are pushed
-### 
-
-# Assume you are at main branch
-# save the changes to the work-branch
-git branch work-branch
-
-# reset the local main branch
-git reset --hard upstream/main
-
-# reset the origin main branch
-git push origin main --force
-
-# switch to the work branch when developing
-git checkout work-branch
-```
 
 ## Use Case
 #### Using the covid mortality dataset
