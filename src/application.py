@@ -194,11 +194,10 @@ if __name__ == '__main__':
                         help='The host on which the web server will listen')
     parser.add_argument('--port', type=int,
                         help='The port on which the web server will listen')
-    parser.add_argument('--datadir', type=str, help='The directory of data source')
     parser.add_argument('--debug', type=bool, help='The DEBUG option of Flask.run')
     args = parser.parse_args()
 
-    dash_app = init_dashboard(app, args.datadir)
+    dash_app = init_dashboard(app, app.server.config['DATA_DIR'])
 
     dash_app.run(
         debug=args.debug,
