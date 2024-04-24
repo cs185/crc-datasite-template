@@ -133,9 +133,11 @@ The application showing the visualization of the dataset is running on http://10
 In this web page, the "Target" dropdown can choose the a value and the data shown will be the entries whose value of a specific column (the one you specified at the `DROP_DOWN_COL` in the `.env` file) equals to the chosen value.
 
 In this example, if I choose "Ohio", the data shown would only be the entries with "State" column equals to "Ohio".
+
 <img width="187" alt="image" src="https://github.com/cs185/crc-datasite-template/assets/142818430/bcbb99ff-6e92-4c78-af82-8d84b4bbe7b6">
 
 The "Date Range" picker can choose the date range within which you want your shown data is. The date values come from the field of the data you specified at the `DATE_COL` in the `.env` file. Here I picked this value.
+
 <img width="230" alt="image" src="https://github.com/cs185/crc-datasite-template/assets/142818430/3b6e38cb-0cdd-4780-985b-8eafb1458016">
 
 The "Data Options" picker can choose the fields of the data you want to show in the plot. And the result of the above option would be:
@@ -150,5 +152,12 @@ The "Group by" Selector can choose a field. And the data will be grouped by the 
 If we choose "Disable", the group by function will be disabled:
 <img width="1420" alt="image" src="https://github.com/cs185/crc-datasite-template/assets/142818430/0c603fd8-c75e-4e3d-85af-e45130bb1ae1">
 
+Feel free to access the website and play with it!
 
-
+## Recap: Guidance on How to Make this App a Custom One
+- make sure you have everything setup, including the VM, the repository, the docker.
+- put the cleaned dataset under `src/resource`
+- make sure you understand the schema of the dataset and create a `.env` file according to your needs
+- put the `.env` file under the `/src`
+- in the repository, try `docker compose up --build -d`
+- access the website via [<ip-of-your-vm>:8000]
