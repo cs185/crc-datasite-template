@@ -85,18 +85,6 @@ There are two ways you can do this depending on where the data is from
 curl -o ~/src/resrouce/<dataset-name>.csv https://<example.com>/<data>/<dataset-name>.csv
 ```
 
-#### Upload it to VM from your local machine
-If you are using Mac, go to finder > go > connect to server > and enter
-[smb://smb.rdf.rice.edu/research/crc/<netid>]
-you'll be prompted for your netid credentials. Once you're connected, make sure you can create a file in your directory and delete the file
-Now you can do:
-- put the data source, say `dataset-name.csv` into this file on your local machine
-- ssh to your VM
-- try
-```shell
-cp /rdf/crc/<netid>/dataset-name.csv ~/crc-datasite-template/src/resource/
-```
-
 ### .env configuration file
 After having the dataset, in most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
 There are five fields in the file related to a given data and have a big impact on the representation of the data:

@@ -1,5 +1,3 @@
-# -- Base --
-
 FROM python:3.11-slim-buster AS base
 
 WORKDIR /app
@@ -11,28 +9,16 @@ RUN groupadd -g "${GID}" python \
   && useradd --create-home --no-log-init -u "${UID}" -g "${GID}" python \
   && chown python:python -R /app
 
-# -- Build --
-
-FROM base AS build
-
-WORKDIR /app
-
 COPY requirements.txt .
 
-RUN pip install --no-cache-dir --user -r requirements.txt
-
-# -- Release --
-
-FROM base AS release
-
-WORKDIR /app
+RUN pip install --no-cache-dir -r requirements.txt
 
 ENV PYTHONUNBUFFERED="true" \
     PYTHONIOENCODING="utf-8" \
     PYTHONDONTWRITEBYTECODE="true" \
     PATH="${PATH}:/home/python/.local/bin"
 
-COPY --chown=python:python --from=build /root/.local /home/python/.local
+# COPY --chown=python:python /root/.local /home/python/.local
 
 ARG APP_HOST="0.0.0.0"
 ARG APP_PORT="8000"
@@ -44,7 +30,6 @@ ENV DEBUG=${DEBUG}
 
 EXPOSE $APP_PORT
 
-# CMD ["python", "application.py", "--host", "$APP_HOST", "--port", "$APP_PORT", "--datadir", "$DATA_DIR"]
 CMD python application.py --host $APP_HOST --port $APP_PORT --debug $DEBUG
 
 USER python
