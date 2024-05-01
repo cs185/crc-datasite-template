@@ -92,7 +92,7 @@ There are five fields in the file related to a given data and have a big impact 
 
 ### Docker Compose file
 In ./docker-compose.yml, make sure to include the location of the data source you just downloaded under services.rdf-usage-stats.volumns:
-```docker
+```yaml
 services:
   rdf-usage-stats:
     volumes:
