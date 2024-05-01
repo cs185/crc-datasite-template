@@ -66,7 +66,7 @@ sudo systemctl enable containerd --now
 sudo usermod -aG docker $USER
 ```
 
-### Fork and Clone this Tempelate Repository to your VM
+### Clone this Tempelate Repository to your VM
 When you are at this [repository](https://github.com/cs185/crc-datasite-template), just click the "Fork" button on the top-right hand.
 In the new page pops up, click the green button with "Create Fork".
 Then once you confirm that there is a same repo under your github account:
@@ -76,11 +76,7 @@ Then once you confirm that there is a same repo under your github account:
 git clone https://github.com/<github-username>/crc-datasite-template $HOME/crc-datasite-template
 ```
 
-### Get the Data Source You Want to Visualize with the Template
-Firstly, you need to make a directory `resource/` under `src/`.
-To visualize the data, you need to put the data to the `src/resource/` folder where the program will get the data from.
-There are two ways you can do this depending on where the data is from
-#### Get it from an Online Data Provider Using Curl
+### Get the Data Source Online You Want to Visualize with the Template Using Curl
 ```shell
 curl -o /rdf/crc/<netid>/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
 ```
@@ -144,7 +140,7 @@ Feel free to access the website and play with it!
 
 ## Recap: Guidance on How to Make this App a Custom One
 - make sure you have everything setup, including the VM, the repository, the docker.
-- put the cleaned dataset under `src/resource`
+- put the cleaned dataset under `/rdf/crc/<netid>/<dataset-name>.csv`
 - make sure you understand the schema of the dataset and create a `.env` file according to your needs
 - put the `.env` file under the `/src`
 - in the repository, try `docker compose up --build -d`
