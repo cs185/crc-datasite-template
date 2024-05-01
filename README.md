@@ -82,7 +82,7 @@ git clone https://github.com/<github-username>/crc-datasite-template $HOME/crc-d
 curl -o /rdf/crc/<netid>/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
 ```
 
-#### Docker Compose file
+#### Put the data source to the container by modiying Docker Compose file
 In ./docker-compose.yml, make sure to include the location of the data source you just downloaded under services.rdf-usage-stats.volumns:
 ```yaml
 services:
