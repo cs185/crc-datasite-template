@@ -82,13 +82,13 @@ To visualize the data, you need to put the data to the `src/resource/` folder wh
 There are two ways you can do this depending on where the data is from
 #### Get it from an Online Data Provider Using Curl
 ```shell
-curl -o ~/src/resrouce/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
+curl -o /rdf/crc/<netid>/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
 ```
 
 ### .env configuration file
 After having the dataset, in most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
 There are five fields in the file related to a given data and have a big impact on the representation of the data:
-* DATA_DIR -- the path to the data source, usually `./src/resource/<dataset-name>.csv`
+* DATA_DIR -- the path to the data source, usually `/rdf/crc/<netid>/<dataset-name>.csv`, the dataset which you just downloaded to your rdf share folder
 * DATE_COL -- for specifying the time column of the data
 * RATIO_COLS -- for specifying the columns which contain several groups of the data and can be used in "group by" manner in visualization
 * DROP_DOWN_COL -- for specifying the column which contain several categories for the data and can be used as data filters
