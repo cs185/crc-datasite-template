@@ -82,7 +82,7 @@ To visualize the data, you need to put the data to the `src/resource/` folder wh
 There are two ways you can do this depending on where the data is from
 #### Get it from an Online Data Provider Using Curl
 ```shell
-curl -o ~/src/resrouce/<dataset-name>.csv https://<example.com>/<data>/<dataset-name>.csv
+curl -o ~/src/resrouce/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
 ```
 
 ### .env configuration file
