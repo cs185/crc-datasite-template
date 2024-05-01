@@ -76,7 +76,7 @@ Then once you confirm that there is a same repo under your github account:
 git clone https://github.com/<github-username>/crc-datasite-template $HOME/crc-datasite-template
 ```
 
-### Get the Data Source Online You Want to Visualize with the Template Using Curl
+### Get the Data Source to the rdf share folder for Visualizing with the Template Using Curl
 ```shell
 curl -o /rdf/crc/<netid>/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
 ```
@@ -84,12 +84,20 @@ curl -o /rdf/crc/<netid>/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf
 ### .env configuration file
 After having the dataset, in most cases, the only thing that needs to be modified is the .env file if the logic behind the template works fine
 There are five fields in the file related to a given data and have a big impact on the representation of the data:
-* DATA_DIR -- the path to the data source, usually `/rdf/crc/<netid>/<dataset-name>.csv`, the dataset which you just downloaded to your rdf share folder
 * DATE_COL -- for specifying the time column of the data
 * RATIO_COLS -- for specifying the columns which contain several groups of the data and can be used in "group by" manner in visualization
 * DROP_DOWN_COL -- for specifying the column which contain several categories for the data and can be used as data filters
 * SITE_NAME -- the name of the website
 * AUTHOR -- the author
+
+### Docker Compose file
+In ./docker-compose.yml, make sure to include the location of the data source you just downloaded under services.rdf-usage-stats.volumns:
+```docker
+services:
+  rdf-usage-stats:
+    volumes:
+      - "/rdf/crc/<netid>/<dataset-name>.csv:/app/<dataset-name>.csv"
+```
 
 Note: the RATIO_COLS and DROP_DOWN_COL can be left with no value specified if we do not need them. It will not influence the data visualization.
 Example on what to put in this file is given below.
