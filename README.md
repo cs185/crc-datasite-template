@@ -76,9 +76,19 @@ Then once you confirm that there is a same repo under your github account:
 git clone https://github.com/<github-username>/crc-datasite-template $HOME/crc-datasite-template
 ```
 
-### Get the Data Source to the rdf share folder for Visualizing with the Template Using Curl
+### Get the Data Souce for Visualizing with the Template
+#### Get the Data Source to the rdf share folder Using Curl
 ```shell
 curl -o /rdf/crc/<netid>/<dataset-name>.csv 'https://data.cdc.gov/api/views/xkkf-xrst/rows.csv?accessType=DOWNLOAD&bom=true&format=true%20target='
+```
+
+#### Docker Compose file
+In ./docker-compose.yml, make sure to include the location of the data source you just downloaded under services.rdf-usage-stats.volumns:
+```yaml
+services:
+  rdf-usage-stats:
+    volumes:
+      - "/rdf/crc/<netid>/<dataset-name>.csv:/app/<dataset-name>.csv"
 ```
 
 ### .env configuration file
@@ -89,15 +99,6 @@ There are five fields in the file related to a given data and have a big impact 
 * DROP_DOWN_COL -- for specifying the column which contain several categories for the data and can be used as data filters
 * SITE_NAME -- the name of the website
 * AUTHOR -- the author
-
-### Docker Compose file
-In ./docker-compose.yml, make sure to include the location of the data source you just downloaded under services.rdf-usage-stats.volumns:
-```yaml
-services:
-  rdf-usage-stats:
-    volumes:
-      - "/rdf/crc/<netid>/<dataset-name>.csv:/app/<dataset-name>.csv"
-```
 
 Note: the RATIO_COLS and DROP_DOWN_COL can be left with no value specified if we do not need them. It will not influence the data visualization.
 Example on what to put in this file is given below.
