@@ -11,6 +11,7 @@ services:
       - "0.0.0.0:8000:8000"
     volumes:
       - "./src:/app"
+      - "/rdf/crc/cs185/covid_mortality.csv:/app/covid_mortality.csv"
     build:
       context: "./src"
       dockerfile: "../docker/flask/Dockerfile"
